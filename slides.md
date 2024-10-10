@@ -75,12 +75,37 @@ Clean Architecture is a software design philosophy that separates the elements o
 
 ---
 
+# Code Example: Project Structure
+
+An express.js application with create user API.
+
+```sh
+src
+├── domain
+│   ├── entities
+│   │   └── user.ts
+│   ├── repositories
+│   │   └── user-repository.ts
+│   └── usecases
+│       └── create-user-usecase.ts
+├── infrastructure
+│   └── database
+│       └── mongo-user-repository.ts
+├── interfaces
+│   └── controller
+│       └── user-controller.ts
+└── main.ts
+```
+
+---
+
 # Code Example: Entity
 
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-class User {
+// src/domain/entities/user.ts
+export class User {
   constructor(
     public id: string,
     public name: string,
@@ -98,17 +123,32 @@ class User {
 
 ---
 
+# Code Example: Repository
+
+<div class="max-h-[400px] overflow-y-auto">
+
+```typescript
+// src/domain/repositories/user-repository.ts
+export interface UserRepository {
+  save(user: User): Promise<void>;
+  findById(id: string): Promise<User | null>;
+}
+```
+
+</div>
+
+---
+
 # Code Example: Use Case
 
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-interface UserRepository {
-  save(user: User): Promise<void>;
-  findById(id: string): Promise<User | null>;
-}
+// src/domain/usecases/create-user-usecase.ts
+import { UserRepository } from '../repositories/user-repository'
+import { User } from '../entities/user'
 
-class CreateUserUseCase {
+export class CreateUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(userData: { name: string; email: string }): Promise<User> {
@@ -133,7 +173,8 @@ class CreateUserUseCase {
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-class UserController {
+// src/interfaces/controller/user-controller.ts
+export class UserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
 
   async createUser(req: Request, res: Response) {
@@ -156,10 +197,10 @@ class UserController {
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-// src/infrastructure/database/MongoUserRepository.ts
+// src/infrastructure/database/mongo-user-repository.ts
 import { MongoClient } from 'mongodb';
-import { UserRepository } from '../../domain/repositories/UserRepository';
-import { User } from '../../domain/entities/User';
+import { UserRepository } from '../../domain/repositories/user-repository';
+import { User } from '../../domain/entities/user';
 
 export class MongoUserRepository implements UserRepository {
   private client: MongoClient;
@@ -192,9 +233,9 @@ export class MongoUserRepository implements UserRepository {
 ```typescript
 // src/main.ts
 import express from 'express';
-import { MongoUserRepository } from './infrastructure/database/MongoUserRepository';
-import { CreateUserUseCase } from './domain/usecases/CreateUserUseCase';
-import { UserController } from './interfaces/controllers/UserController';
+import { MongoUserRepository } from './infrastructure/database/mongo-user-repository';
+import { CreateUserUseCase } from './domain/usecases/create-user-usecase';
+import { UserController } from './interfaces/controllers/user-controller';
 
 const app = express();
 const mongoRepo = new MongoUserRepository('mongodb://localhost:27017');
