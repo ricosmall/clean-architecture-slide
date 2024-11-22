@@ -1,6 +1,6 @@
 ---
 theme: seriph
-background: https://source.unsplash.com/collection/94734566/1920x1080
+background: https://picsum.photos/seed/sum/1920/1080
 class: 'text-center'
 highlighter: shiki
 lineNumbers: false
@@ -44,14 +44,14 @@ Clean Architecture is a software design philosophy that separates the elements o
 
 # The Clean Architecture Layers
 
-<div class="flex justify-center">
-  <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" class="h-80 rounded shadow" />
-</div>
-
 1. **Entities**: Enterprise-wide business rules
 2. **Use Cases**: Application-specific business rules
 3. **Interface Adapters**: Converts data between use cases and external agencies
 4. **Frameworks and Drivers**: External frameworks, tools, and delivery mechanisms
+
+<div class="flex justify-center">
+  <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" class="h-80 rounded shadow" />
+</div>
 
 ---
 
@@ -74,10 +74,17 @@ Clean Architecture is a software design philosophy that separates the elements o
 5. **Follow SOLID principles**: Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion
 
 ---
+layout: center
+class: text-center
+---
+
+# Code Example for Node.js Application
+
+An `express.js` application with create user API.
+
+---
 
 # Code Example: Project Structure
-
-An express.js application with create user API.
 
 ```sh
 src
@@ -168,7 +175,7 @@ export class CreateUserUseCase {
 
 ---
 
-# Code Example: Interface Adapter
+# Code Example: Interface Adapter - Controller
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -194,7 +201,7 @@ export class UserController {
 
 # Code Example: Frameworks and Drivers
 
-<div class="max-h-[400px] overflow-y-auto">
+<div class="max-h-[500px] overflow-y-auto">
 
 ```typescript
 // src/infrastructure/database/mongo-user-repository.ts
@@ -226,7 +233,7 @@ export class MongoUserRepository implements UserRepository {
 
 ---
 
-# Putting It All Together: App
+# Code Example: Putting It All Together in App
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -250,35 +257,54 @@ app.listen(3000, () => console.log('Server running on port 3000'));
 </div>
 
 ---
+layout: center
+class: text-center
+---
 
-# Clean Architecture in Front-end: Chat App Example
+# Code Example for Front-end Application
 
-Let's apply Clean Architecture principles to a simple chat web app using React.
-
-1. Entities
-2. Use Cases
-3. Interface Adapters
-4. Frameworks & Drivers (React Components)
+A `React` application with chat room.
 
 ---
 
-# Entities: Message
+# Code Example: Project Structure
+
+```sh
+src
+├── domain
+│   ├── entities
+│   │   └── message.ts
+│   ├── repositories
+│   │   └── message-repository.ts
+│   └── usecases
+│       ├── send-message-usecase.ts
+│       └── get-message-usecase.ts
+├── infrastructure
+│   └── repositories
+│       └── mock-message-repository.ts
+├── presentation
+│   └── message-presenter.ts
+├── ui
+│   └── components
+│       └── chat-box
+│           ├── chat-box.tsx
+│           └── use-chat-box.ts
+└── app.tsx
+```
+
+---
+
+# Code Example: Entity
 
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-// src/domain/entities/Message.ts
-export class Message {
-  constructor(
-    public id: string,
-    public content: string,
-    public sender: string,
-    public timestamp: Date
-  ) {}
-
-  isValid(): boolean {
-    return this.content.trim().length > 0 && this.sender.trim().length > 0;
-  }
+// src/domain/entities/message-data.ts
+export interface MessageData {
+  id: string;
+  content: string;
+  sender: string;
+  timestamp: Date;
 }
 ```
 
@@ -286,18 +312,65 @@ export class Message {
 
 ---
 
-# Use Cases: SendMessage and GetMessages
+# Code Example: Entity
+
+<div class="max-h-[500px] overflow-y-auto">
+
+```typescript
+// src/domain/entities/message.ts
+import { MessageData } from './message-data';
+
+export class Message {
+  constructor(
+    public id: string,
+    public content: string,
+    public sender: string
+  ) {}
+
+  isValid(): boolean {
+    return this.content.trim().length > 0 && this.sender.trim().length > 0;
+  }
+
+  toData(): MessageData {
+    return {
+      id: this.id,
+      content: this.content,
+      sender: this.sender
+    }
+  }: 
+}
+```
+
+</div>
+
+---
+
+# Code Example: Repository
 
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-// src/domain/usecases/SendMessageUseCase.ts
-import { Message } from '../entities/Message';
+// src/domain/repositories/message-repository.ts
+import { Message } from '../entities/message';
 
 export interface MessageRepository {
   saveMessage(message: Message): Promise<void>;
   getMessages(): Promise<Message[]>;
 }
+```
+
+</div>
+
+---
+
+# Code Example: Use Case - SendMessageUseCase
+
+<div class="max-h-[500px] overflow-y-auto">
+
+```typescript
+// src/domain/usecases/send-message-usecase.ts
+import { Message } from '../entities/message';
+import { MessageRepository } from '../repositories/message-repository';
 
 export class SendMessageUseCase {
   constructor(private messageRepository: MessageRepository) {}
@@ -306,8 +379,7 @@ export class SendMessageUseCase {
     const message = new Message(
       Date.now().toString(),
       content,
-      sender,
-      new Date()
+      sender
     );
 
     if (!message.isValid()) {
@@ -318,8 +390,21 @@ export class SendMessageUseCase {
     return message;
   }
 }
+```
 
-// src/domain/usecases/GetMessagesUseCase.ts
+</div>
+
+---
+
+# Code Example: Use Case - GetMessageUseCase
+
+<div class="max-h-[400px] overflow-y-auto">
+
+```typescript
+// src/domain/usecases/get-message-usecase.ts
+import { Message } from '../entities/message';
+import { MessageRepository } from '../repositories/message-repository';
+
 export class GetMessagesUseCase {
   constructor(private messageRepository: MessageRepository) {}
 
@@ -333,29 +418,26 @@ export class GetMessagesUseCase {
 
 ---
 
-# Interface Adapters: MessagePresenter
+# Code Example: Interfaces Adapeter - Presenter
 
 <div class="max-h-[400px] overflow-y-auto">
 
 ```typescript
-// src/presentation/presenters/MessagePresenter.ts
-import { Message } from '../../domain/entities/Message';
-
-export interface MessageViewModel {
-  id: string;
-  content: string;
-  sender: string;
-  time: string;
-}
+// src/presentation/message-presenter.ts
+import { Message } from '../domain/entities/message';
+import { MessageData } from '../domain/entities/message-data';
+import { SendMessageUseCase } from '../domain/usecases/send-message-usecase.ts';
+import { GetMessagesUseCase } from '../domain/usecases/get-messages-usecase.ts';
 
 export class MessagePresenter {
-  static toViewModel(message: Message): MessageViewModel {
-    return {
-      id: message.id,
-      content: message.content,
-      sender: message.sender,
-      time: message.timestamp.toLocaleTimeString(),
-    };
+  constructor(private sendMessageUseCase: SendMessageUseCase, private getMessagesUseCase: GetMessagesUseCase) {}
+
+  async getMessages(): Promise<MessageData[]> {
+    return this.getMessagesUseCase.execute();
+  }
+
+  async sendMessage(content: string, sender: string): Promise<Message> {
+    return this.sendMessageUseCase.execute(content, sender);
   }
 }
 ```
@@ -364,80 +446,14 @@ export class MessagePresenter {
 
 ---
 
-# Frameworks & Drivers: React Components
+# Code Example: Frameworks and Drivers
 
 <div class="max-h-[400px] overflow-y-auto">
 
-```tsx
-// src/presentation/components/ChatBox.tsx
-import React, { useState, useEffect } from 'react';
-import { SendMessageUseCase } from '../../domain/usecases/SendMessageUseCase';
-import { GetMessagesUseCase } from '../../domain/usecases/GetMessagesUseCase';
-import { MessagePresenter, MessageViewModel } from '../presenters/MessagePresenter';
-
-interface ChatBoxProps {
-  sendMessageUseCase: SendMessageUseCase;
-  getMessagesUseCase: GetMessagesUseCase;
-}
-
-export const ChatBox: React.FC<ChatBoxProps> = ({ sendMessageUseCase, getMessagesUseCase }) => {
-  const [messages, setMessages] = useState<MessageViewModel[]>([]);
-  const [input, setInput] = useState('');
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const fetchedMessages = await getMessagesUseCase.execute();
-      setMessages(fetchedMessages.map(MessagePresenter.toViewModel));
-    };
-    fetchMessages();
-  }, [getMessagesUseCase]);
-
-  const handleSend = async () => {
-    try {
-      const message = await sendMessageUseCase.execute(input, 'User');
-      setMessages([...messages, MessagePresenter.toViewModel(message)]);
-      setInput('');
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
-  };
-
-  return (
-    <div>
-      <div>
-        {messages.map((msg) => (
-          <div key={msg.id}>
-            <strong>{msg.sender}</strong>: {msg.content} ({msg.time})
-          </div>
-        ))}
-      </div>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type a message..."
-      />
-      <button onClick={handleSend}>Send</button>
-    </div>
-  );
-};
-```
-
-</div>
-
----
-
-# Putting It All Together: App Component
-
-<div class="max-h-[400px] overflow-y-auto">
-
-```tsx
-// src/App.tsx
-import React from 'react';
-import { ChatBox } from './presentation/components/ChatBox';
-import { SendMessageUseCase } from './domain/usecases/SendMessageUseCase';
-import { GetMessagesUseCase } from './domain/usecases/GetMessagesUseCase';
-import { MessageRepository } from './domain/usecases/SendMessageUseCase';
-import { Message } from './domain/entities/Message';
+```typescript
+// src/infrastructure/repositories/mock-message-repository.ts
+import { Message } from '../../domain/entities/message';
+import { MessageRepository } from '../../domain/repositories/message-repository';
 
 // Mock implementation of MessageRepository
 class MockMessageRepository implements MessageRepository {
@@ -452,19 +468,102 @@ class MockMessageRepository implements MessageRepository {
     return this.messages;
   }
 }
+```
+
+</div>
+
+---
+
+# Code Example: Frameworks and Drivers - UI
+
+<div class="max-h-[500px] overflow-y-auto">
+
+```tsx
+// src/ui/components/chat-box/chat-box.tsx
+import React from 'react';
+import { useChatBox } from './use-chat-box';
+
+interface ChatBoxProps {
+  messagePresenter: MessagePresenter
+}
+
+export const ChatBox: React.FC<ChatBoxProps> = ({ messagePresenter }) => {
+  const { messages, input, setInput, handleSend } = useChatBox(messagePresenter);
+
+  return (
+    <div>
+      <div>
+        {messages.map((msg) => (<div key={msg.id}><strong>{msg.sender}</strong>: {msg.content}</div>))}
+      </div>
+      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type a message..." />
+      <button onClick={handleSend}>Send</button>
+    </div>
+  );
+};
+```
+
+</div>
+
+---
+
+# Code Example: Frameworks and Drivers - UI
+
+<div class="max-h-[500px] overflow-y-auto">
+
+```tsx
+// src/ui/components/chat-box/hooks/use-chat-box.ts
+import React, { useState, useEffect } from 'react';
+import { MessageData } from '../../../domain/entities/message-data';
+import { MessagePresenter } from '../../../interfaces/presenters/message-presenter';
+
+export const useChatBox = (messagePresenter: MessagePresenter) => {
+  const [messages, setMessages] = useState<MessageData[]>([]);
+  const [input, setInput] = useState('');
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const fetchedMessages = await messagePresenter.getMessages();
+      setMessages(fetchedMessages.map(message => message.toData()));
+    };
+    fetchMessages();
+  }, [messagePresenter]);
+
+  const handleSend = async () => {
+    const message = await messagePresenter.sendMessage(input, 'User');
+    setMessages([...messages, message.toData()]);
+    setInput('');
+  };
+  return { messages, input, setInput, handleSend }
+};
+```
+
+</div>
+
+---
+
+# Code Example: Putting It All Together - App
+
+<div class="max-h-[500px] overflow-y-auto">
+
+```tsx
+// src/app.tsx
+import React from 'react';
+import { ChatBox } from './ui/components/chat-box/chat-box';
+import { SendMessageUseCase } from './domain/usecases/send-message-usecase';
+import { GetMessagesUseCase } from './domain/usecases/get-messages-usecase';
+import { MockMessageRepository } from './infrastructure/repositories/mock-message-repository';
+import { MessagePresenter } from './interfaces/presenters/message-presenter';
 
 const App: React.FC = () => {
   const messageRepository = new MockMessageRepository();
   const sendMessageUseCase = new SendMessageUseCase(messageRepository);
   const getMessagesUseCase = new GetMessagesUseCase(messageRepository);
+  const messagePresenter = new MessagePresenter(sendMessageUseCase, getMessagesUseCase);
 
   return (
     <div>
       <h1>Clean Architecture Chat App</h1>
-      <ChatBox 
-        sendMessageUseCase={sendMessageUseCase}
-        getMessagesUseCase={getMessagesUseCase}
-      />
+      <ChatBox messagePresenter={messagePresenter} />
     </div>
   );
 };
