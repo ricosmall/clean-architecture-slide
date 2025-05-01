@@ -5,20 +5,20 @@ class: 'text-center'
 highlighter: shiki
 lineNumbers: false
 info: |
-  ## Clean Architecture
-  Presentation on Clean Architecture principles and implementation.
+  ## 整洁架构
+  关于整洁架构原则和实现的演示。
 drawings:
   persist: false
 css: unocss
 ---
 
-# Clean Architecture
+# 整洁架构
 
-A comprehensive guide to building maintainable and scalable software
+构建可维护和可扩展软件的综合指南
 
 <div class="pt-12">
   <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
+    按空格键进入下一页 <carbon:arrow-right class="inline"/>
   </span>
 </div>
 
@@ -31,23 +31,23 @@ A comprehensive guide to building maintainable and scalable software
 
 ---
 
-# What is Clean Architecture?
+# 什么是整洁架构？
 
-Clean Architecture is a software design philosophy that separates the elements of a design into ring levels. The main rule of clean architecture is that source code dependencies can only point inwards.
+整洁架构是一种软件设计哲学，它将设计元素分离成不同的环层。整洁架构的主要规则是源代码依赖只能指向内部。
 
-- 🎯 **Separation of Concerns** - Clear boundaries between different parts of your application
-- 🔄 **Dependency Rule** - Dependencies point inward, toward higher-level policies
-- 🔌 **Pluggable** - The core business logic is independent of UI, database, frameworks, and external agencies
-- 📊 **Testable** - Business rules can be tested without UI, database, web server, or any external element
+- 🎯 **关注点分离** - 应用程序不同部分之间的明确边界
+- 🔄 **依赖规则** - 依赖指向内部，朝向高级策略，单向依赖
+- 🔌 **可插拔** - 核心业务逻辑独立于UI、数据库、框架和外部代理
+- 📊 **可测试** - 业务规则可以在没有UI、数据库、Web服务器或任何外部元素的情况下进行测试
 
 ---
 
-# The Clean Architecture Layers
+# 整洁架构的层次
 
-1. **Entities**: Enterprise-wide business rules
-2. **Use Cases**: Application-specific business rules
-3. **Interface Adapters**: Converts data between use cases and external agencies
-4. **Frameworks and Drivers**: External frameworks, tools, and delivery mechanisms
+1. **实体（Entities）**：核心的业务实体
+2. **用例（Use Cases）**：应用程序特定的业务规则
+3. **接口适配器（Interface Adapters）**：在用例和外部代理之间转换数据
+4. **框架和驱动（Frameworks and Drivers）**：外部框架、工具和驱动
 
 <div class="flex justify-center">
   <img src="https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg" class="h-80 rounded shadow" />
@@ -55,36 +55,36 @@ Clean Architecture is a software design philosophy that separates the elements o
 
 ---
 
-# Benefits of Clean Architecture
+# 整洁架构的好处
 
-- 📦 **Independent of Frameworks**: The architecture doesn't depend on the existence of some library of feature-laden software
-- 🧪 **Testable**: The business rules can be tested without the UI, database, web server, or any external element
-- 🖥️ **Independent of UI**: The UI can change easily, without changing the rest of the system
-- 💾 **Independent of Database**: You can swap out Oracle or SQL Server for Mongo, BigTable, CouchDB, or something else
-- 🔄 **Independent of any external agency**: Your business rules don't know anything about the outside world
+- 📦 **独立于框架**：架构不依赖于某些功能丰富的软件库的存在
+- 🧪 **可测试**：业务规则可以在没有UI、数据库、Web服务器或任何外部元素的情况下进行测试
+- 🖥️ **独立于UI**：UI可以轻松更改，而不改变系统的其余部分
+- 💾 **独立于数据库**：你可以将Oracle或SQL Server替换为Mongo、BigTable、CouchDB或其他数据库
+- 🔄 **独立于任何外部代理**：你的业务规则不了解外部世界的任何信息
 
 ---
 
-# Implementing Clean Architecture
+# 实现整洁架构
 
-1. **Start with the core**: Define your entities and use cases
-2. **Build outward**: Implement interface adapters and frameworks last
-3. **Use dependency inversion**: High-level modules should not depend on low-level modules
-4. **Create boundaries**: Use interfaces to define clear boundaries between layers
-5. **Follow SOLID principles**: Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion
+1. **从核心开始**：定义你的实体和用例
+2. **向外构建**：最后实现接口适配器和框架
+3. **使用依赖倒置**：高级模块不应该依赖于低级模块
+4. **创建边界**：使用接口定义层之间的明确边界
+5. **遵循SOLID原则**：单一职责、开放封闭、里氏替换、接口隔离和依赖倒置
 
 ---
 layout: center
 class: text-center
 ---
 
-# Code Example for Node.js Application
+# Node.js应用程序的代码示例
 
-An `express.js` application with create user API.
+一个带有创建用户API的`express.js`应用程序。
 
 ---
 
-# Code Example: Project Structure
+# 代码示例：项目结构
 
 ```sh
 src
@@ -106,7 +106,7 @@ src
 
 ---
 
-# Code Example: Entity
+# 代码示例：实体
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -120,7 +120,7 @@ export class User {
   ) {}
 
   validateEmail(): boolean {
-    // Email validation logic
+    // 电子邮件验证逻辑
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
   }
 }
@@ -130,7 +130,7 @@ export class User {
 
 ---
 
-# Code Example: Repository
+# 代码示例：仓储
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -146,7 +146,7 @@ export interface UserRepository {
 
 ---
 
-# Code Example: Use Case
+# 代码示例：用例
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -162,7 +162,7 @@ export class CreateUserUseCase {
     const user = new User(generateId(), userData.name, userData.email);
     
     if (!user.validateEmail()) {
-      throw new Error('Invalid email');
+      throw new Error('无效的电子邮箱');
     }
 
     await this.userRepository.save(user);
@@ -175,7 +175,7 @@ export class CreateUserUseCase {
 
 ---
 
-# Code Example: Interface Adapter - Controller
+# 代码示例：接口适配器 - 控制器
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -199,7 +199,7 @@ export class UserController {
 
 ---
 
-# Code Example: Frameworks and Drivers
+# 代码示例：框架和驱动
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -233,7 +233,7 @@ export class MongoUserRepository implements UserRepository {
 
 ---
 
-# Code Example: Putting It All Together in App
+# 代码示例：将所有内容放在一起
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -261,13 +261,13 @@ layout: center
 class: text-center
 ---
 
-# Code Example for Front-end Application
+# 前端应用程序的代码示例
 
-A `React` application with chat room.
+一个带有聊天室的`React`应用程序。
 
 ---
 
-# Code Example: Project Structure
+# 代码示例：项目结构
 
 ```sh
 src
@@ -294,7 +294,7 @@ src
 
 ---
 
-# Code Example: Entity
+# 代码示例：实体
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -312,7 +312,7 @@ export interface MessageData {
 
 ---
 
-# Code Example: Entity
+# 代码示例：实体
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -345,7 +345,7 @@ export class Message {
 
 ---
 
-# Code Example: Repository
+# 代码示例：仓库
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -363,7 +363,7 @@ export interface MessageRepository {
 
 ---
 
-# Code Example: Use Case - SendMessageUseCase
+# 代码示例：用例 - SendMessageUseCase
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -383,7 +383,7 @@ export class SendMessageUseCase {
     );
 
     if (!message.isValid()) {
-      throw new Error('Invalid message');
+      throw new Error('无效的消息');
     }
 
     await this.messageRepository.saveMessage(message);
@@ -396,7 +396,7 @@ export class SendMessageUseCase {
 
 ---
 
-# Code Example: Use Case - GetMessageUseCase
+# 代码示例：用例 - GetMessageUseCase
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -418,7 +418,7 @@ export class GetMessagesUseCase {
 
 ---
 
-# Code Example: Interfaces Adapeter - Presenter
+# 代码示例：接口适配器 - Presenter
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -446,7 +446,7 @@ export class MessagePresenter {
 
 ---
 
-# Code Example: Frameworks and Drivers
+# 代码示例：框架和驱动
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -455,13 +455,13 @@ export class MessagePresenter {
 import { Message } from '../../domain/entities/message';
 import { MessageRepository } from '../../domain/repositories/message-repository';
 
-// Mock implementation of MessageRepository
+// Mock实现MessageRepository
 class MockMessageRepository implements MessageRepository {
   private messages: Message[] = [];
 
   async saveMessage(message: Message): Promise<void> {
     this.messages.push(message);
-    console.log('Message saved:', message);
+    console.log('消息保存:', message);
   }
 
   async getMessages(): Promise<Message[]> {
@@ -474,7 +474,7 @@ class MockMessageRepository implements MessageRepository {
 
 ---
 
-# Code Example: Frameworks and Drivers - UI
+# 代码示例：框架和驱动 - UI
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -495,8 +495,8 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messagePresenter }) => {
       <div>
         {messages.map((msg) => (<div key={msg.id}><strong>{msg.sender}</strong>: {msg.content}</div>))}
       </div>
-      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type a message..." />
-      <button onClick={handleSend}>Send</button>
+      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="输入消息..." />
+      <button onClick={handleSend}>发送</button>
     </div>
   );
 };
@@ -506,7 +506,7 @@ export const ChatBox: React.FC<ChatBoxProps> = ({ messagePresenter }) => {
 
 ---
 
-# Code Example: Frameworks and Drivers - UI
+# 代码示例：框架和驱动 - UI
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -529,7 +529,7 @@ export const useChatBox = (messagePresenter: MessagePresenter) => {
   }, [messagePresenter]);
 
   const handleSend = async () => {
-    const message = await messagePresenter.sendMessage(input, 'User');
+    const message = await messagePresenter.sendMessage(input, '用户');
     setMessages([...messages, message.toData()]);
     setInput('');
   };
@@ -541,7 +541,7 @@ export const useChatBox = (messagePresenter: MessagePresenter) => {
 
 ---
 
-# Code Example: Putting It All Together - App
+# 代码示例：将所有内容放在一起 - App
 
 <div class="max-h-[500px] overflow-y-auto">
 
@@ -562,7 +562,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Clean Architecture Chat App</h1>
+      <h1>整洁架构聊天应用</h1>
       <ChatBox messagePresenter={messagePresenter} />
     </div>
   );
@@ -575,32 +575,32 @@ export default App;
 
 ---
 
-# Benefits of Clean Architecture in Front-end
+# 整洁架构在前端的好处
 
-1. **Separation of Concerns**: UI logic is separate from business logic
-2. **Testability**: Easy to unit test business logic without UI dependencies
-3. **Flexibility**: Can easily swap out UI framework or data sources
-4. **Maintainability**: Changes in one layer don't affect others
-5. **Scalability**: Easy to add new features or modify existing ones
+1. 📦 **关注点分离**：UI逻辑与业务逻辑分离
+2. 🧪 **可测试**：可以在没有UI依赖的情况下测试业务逻辑
+3. 🖥️ **灵活性**：可以轻松替换UI框架或数据源
+4. 💾 **可维护性**：修改一个层不会影响其他层
+5. 🔄 **可扩展性**：可以轻松添加新功能或修改现有功能
 
 ---
 
-# Conclusion
+# 结论
 
-Clean Architecture provides a robust framework for building scalable, maintainable, and testable applications, both in back-end and front-end development.
+整洁架构为构建可扩展、可维护和可测试的应用程序提供了一个强大的框架，无论是在后端还是前端开发中。
 
-- 🏗️ Separates concerns into distinct layers
-- 🔄 Enforces the dependency rule
-- 🧪 Facilitates testing and maintenance
-- 🔌 Allows for easy integration of new features and technologies
+- 🏗️ **将关注点分离成不同的层**
+- 🔄 **强制依赖规则**
+- 🧪 **促进测试和维护**
+- 🔌 **允许轻松集成新功能和技术**
 
-Remember: The goal is to create an architecture that tells readers about the system, not about the frameworks you used to build it.
+记住：目标是创建一个架构，让读者了解系统，而不是了解你用来构建它的框架。
 
 ---
 layout: center
 class: text-center
 ---
 
-# Thank You!
+# 谢谢！
 
-[Learn more about Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+[了解更多关于整洁架构](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
