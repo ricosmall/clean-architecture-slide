@@ -130,7 +130,7 @@ export class User {
 
 ---
 
-# 代码示例：仓储
+# 代码示例：数据仓库
 
 <div class="max-h-[400px] overflow-y-auto">
 
@@ -345,7 +345,7 @@ export class Message {
 
 ---
 
-# 代码示例：仓库
+# 代码示例：数据仓库
 
 <div class="max-h-[400px] overflow-y-auto">
 
